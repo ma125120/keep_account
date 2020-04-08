@@ -24,7 +24,7 @@ abstract class _MonthInfo with Store {
   @computed String get weekday => MyDate.weekday(date);
 
   @action
-  setDate(DateTime date) {
-    date = date;
+  setDate(DateTime _date) {
+    date = _date;
   }
 }

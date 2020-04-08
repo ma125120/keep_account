@@ -9,16 +9,20 @@ part of 'bill.dart';
 Bill _$BillFromJson(Map<String, dynamic> json) {
   return Bill()
     ..id = json['_id'] as int
-    ..iconType = json['iconType'] as String
+    ..iconId = json['iconId'] as String
     ..price = json['price'] as num
     ..note = json['note'] as String
-    ..date = json['date'] as String;
+    ..date = json['date'] as String
+    ..dateInt = json['dateInt'] as int
+    ..hasCost = json['hasCost'] as int;
 }
 
 Map<String, dynamic> _$BillToJson(Bill instance) => <String, dynamic>{
       '_id': instance.id,
-      'iconType': instance.iconType,
+      'iconId': instance.iconId,
       'price': instance.price,
       'note': instance.note,
       'date': instance.date,
+      'dateInt': instance.dateInt,
+      'hasCost': instance.hasCost,
     };

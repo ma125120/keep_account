@@ -14,9 +14,11 @@ class BillProvider {
         await db.execute('''
           create table $tableBill ( 
             $columnId integer primary key autoincrement, 
-            iconType TEXT not null,
+            iconId TEXT not null,
             price REAL not null,
             note TEXT,
+            date TEXT not null,
+            dateInt INTEGER not null,
             hasCost INTEGER not null)
         '''
         );

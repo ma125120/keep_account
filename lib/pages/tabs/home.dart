@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:keep_account/store/index.dart';
 import 'package:keep_account/common/index.dart';
 import 'package:keep_account/components/index.dart';
-import 'package:keep_account/pages/demo/sqflite.dart';
+import 'package:flutter_my_picker/flutter_my_picker.dart';
+// import 'package:keep_account/pages/demo/sqflite.dart';
 
 final counter = Counter();
 
@@ -22,6 +23,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
     super.initState();
     print(MyDate.format('yyyy.MM.dd', MyDate.getNow()));
     print('当前月份: ${MyDate.getNow().month}');
+    print(MyEnum.iconMap);
   }
 
   Widget get renderTop {
@@ -30,7 +32,17 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
       padding: EdgeInsets.symmetric(horizontal: Adapt.px(24), vertical: Adapt.px(12)),
       child: Row(
         children: <Widget>[
-          Container(
+          GestureDetector(
+            onTap: () {
+              MyPicker.showMonthPicker(
+                context: context,
+                onChange: (newMonth) {
+                  print(newMonth);
+                  MyStore.monthInfo.setDate(newMonth);
+                },
+                current: MyStore.monthInfo.date,
+              );
+            },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -80,6 +92,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
         body: Column(
           children: <Widget>[
             renderTop,
+            ...MyEnum.iconList.map((v) => Iconfont(v['icon'])),
             // Observer(builder: (_) => Text('${MyStore.counter.value}'),),
             // Observer(builder: (_) => Text('${MyStore.monthInfo.date}'),),
             // RaisedButton(child: Text('增加'), onPressed: counter.increment, color: Theme.of(context).primaryColor, textColor: Colors.white,),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:keep_account/common/index.dart';
-// import 'package:keep_account/pages/webview.dart';
+import 'package:keep_account/components/index.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:keep_account/pages/tabs/add_bill.dart';
 import 'package:keep_account/pages/tabs/home.dart';
 import 'package:keep_account/pages/tabs/setting.dart';
 
@@ -66,7 +68,20 @@ class _IndexPageState extends State<IndexPage> {
           backgroundColor: Theme.of(context).primaryColor,
           child: Icon(Icons.add),
           onPressed: () {
-            BotToast.showText(text: "添加页面，后续添加");
+            // showModalBottomSheet(context: context, );
+            showModalBottomSheet(context: context,
+              backgroundColor: Colors.transparent,
+              builder: (_) => Container(
+                // margin: EdgeInsets.only(top: 16.0),
+                child: AddBill(),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(topLeft: const Radius.circular(12), topRight: const Radius.circular(12),),
+                  // border: Border.all(width: 6.0),
+                  color: Colors.white
+                ),
+              )
+            );
+            // BotToast.showText(text: "添加页面，后续添加");
           },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

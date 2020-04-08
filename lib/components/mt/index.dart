@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+export './picker.dart';
 
 class MyInk extends StatelessWidget {
   final Widget child;

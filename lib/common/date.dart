@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-Map Weekdays = {
+Map weekdays = {
   1: '星期一',
   2: '星期二',
   3: '星期三',
@@ -14,8 +14,8 @@ class MyDate {
   static DateTime getNow() {
     return new DateTime.now();
   }
-  static DateTime parse([String formattedString]) {
-    return DateTime.tryParse(formattedString);
+  static DateTime parse([date]) {
+    return date.runtimeType == DateTime ? date : DateTime.tryParse(date);
   }
 
   static String format([String newPattern, dynamic date]) {
@@ -23,7 +23,14 @@ class MyDate {
   }
 
   static String weekday(DateTime date) {
-    return Weekdays[date.weekday];
+    return weekdays[date.weekday];
+  }
+
+  static bool isAtSameDay(DateTime day1, DateTime day2) {
+    return day1 != null &&
+        day2 != null &&
+        day1.difference(day2).inDays == 0 &&
+        day1.day == day2.day;
   }
 }
 

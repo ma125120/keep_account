@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:keep_account/common/adapt.dart';
 
@@ -50,6 +51,25 @@ class MyBox extends StatelessWidget {
       padding: padding,
     );
   }
+}
+
+class Iconfont extends StatelessWidget {
+  final int name;
+  final Color color;
+  final double size;
+
+  Iconfont(this.name, { this.color, this.size = 16 });
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(IconData(name, fontFamily: "iconfont", matchTextDirection: true), color: color, size: size,);
+  }
+}
+
+showMyDialog(context, child) {
+  return showCupertinoDialog(context: context, builder: (_) => SafeArea(
+    child: Material(child: child,),
+  ));
 }
 
 ImageProvider myImage(String url) {

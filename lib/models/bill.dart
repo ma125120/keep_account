@@ -7,10 +7,12 @@ part 'bill.g.dart';
 class Bill {
   @JsonKey(name: '_id')
   int id;
-  String iconType;
+  String iconId;
   num price;
   String note;
   String date;
+  int dateInt;
+  int hasCost = 0;
 
   Bill();
 
