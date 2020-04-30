@@ -20,6 +20,7 @@ class Adapt {
     if (!(_ratio is double || _ratio is int)) {
       Adapt.init(750);
     }
+
     return number * _ratio;
   }
 
@@ -62,6 +63,7 @@ class Adapt {
   static get statusBarHeight {
     return _statusBarHeight;
   }
+
   static get navbarHeight {
     return kToolbarHeight;
   }

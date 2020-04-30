@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'month_info.dart';
+part of 'bill.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,7 +8,7 @@ part of 'month_info.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
-mixin _$MonthInfo on _MonthInfo, Store {
+mixin _$BillStore on _BillStore, Store {
   Computed<String> _$monthComputed;
 
   @override
@@ -24,7 +24,7 @@ mixin _$MonthInfo on _MonthInfo, Store {
   String get weekday =>
       (_$weekdayComputed ??= Computed<String>(() => super.weekday)).value;
 
-  final _$dateAtom = Atom(name: '_MonthInfo.date');
+  final _$dateAtom = Atom(name: '_BillStore.date');
 
   @override
   DateTime get date {
@@ -41,7 +41,7 @@ mixin _$MonthInfo on _MonthInfo, Store {
     }, _$dateAtom, name: '${_$dateAtom.name}_set');
   }
 
-  final _$listAtom = Atom(name: '_MonthInfo.list');
+  final _$listAtom = Atom(name: '_BillStore.list');
 
   @override
   List<Bill> get list {
@@ -58,15 +58,22 @@ mixin _$MonthInfo on _MonthInfo, Store {
     }, _$listAtom, name: '${_$listAtom.name}_set');
   }
 
-  final _$_MonthInfoActionController = ActionController(name: '_MonthInfo');
+  final _$getAllAsyncAction = AsyncAction('getAll');
 
   @override
-  dynamic setDate(DateTime date) {
-    final _$actionInfo = _$_MonthInfoActionController.startAction();
+  Future getAll() {
+    return _$getAllAsyncAction.run(() => super.getAll());
+  }
+
+  final _$_BillStoreActionController = ActionController(name: '_BillStore');
+
+  @override
+  dynamic setDate(DateTime _date) {
+    final _$actionInfo = _$_BillStoreActionController.startAction();
     try {
-      return super.setDate(date);
+      return super.setDate(_date);
     } finally {
-      _$_MonthInfoActionController.endAction(_$actionInfo);
+      _$_BillStoreActionController.endAction(_$actionInfo);
     }
   }
 

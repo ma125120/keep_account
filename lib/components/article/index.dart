@@ -8,12 +8,22 @@ class MyTitle extends StatelessWidget {
   final Color color;
   final num size;
 
-  MyTitle(this.text, { this.color, this.size, });
+  MyTitle(
+    this.text, {
+    this.color,
+    this.size,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text(text, style: TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: Adapt.px(size)),),
+      child: Text(
+        text,
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: color,
+            fontSize: Adapt.px(size)),
+      ),
     );
   }
 }
@@ -24,11 +34,20 @@ class MyText extends StatelessWidget {
   final num size;
   final TextAlign align;
 
-  MyText(this.text, { this.color, this.size, this.align = TextAlign.left, });
+  MyText(
+    this.text, {
+    this.color,
+    this.size,
+    this.align = TextAlign.left,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: TextStyle(color: color, fontSize: Adapt.px(size)), textAlign: align,);
+    return Text(
+      text,
+      style: TextStyle(color: color, fontSize: Adapt.px(size)),
+      textAlign: align,
+    );
   }
 }
 
@@ -38,7 +57,12 @@ class MyBox extends StatelessWidget {
   final Color backgroundColor;
   final BoxBorder border;
 
-  MyBox({ this.backgroundColor, this.padding, this.child, this.border, }): assert(child != null);
+  MyBox({
+    this.backgroundColor,
+    this.padding,
+    this.child,
+    this.border,
+  }) : assert(child != null);
 
   @override
   Widget build(BuildContext context) {
@@ -58,28 +82,42 @@ class Iconfont extends StatelessWidget {
   final Color color;
   final double size;
 
-  Iconfont(this.name, { this.color, this.size = 16 });
+  Iconfont(
+    this.name, {
+    this.color,
+    this.size,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Icon(IconData(name, fontFamily: "iconfont", matchTextDirection: true), color: color, size: size,);
+    return Icon(
+      IconData(name, fontFamily: "iconfont", matchTextDirection: true),
+      color: color,
+      size: size ?? Theme.of(context).iconTheme.size,
+    );
   }
 }
 
 showMyDialog(context, child) {
-  return showCupertinoDialog(context: context, builder: (_) => SafeArea(
-    child: Material(child: child,),
-  ));
+  return showCupertinoDialog(
+      context: context,
+      builder: (_) => SafeArea(
+            child: Material(
+              child: child,
+            ),
+          ));
 }
 
 ImageProvider myImage(String url) {
-  return CachedNetworkImageProvider(url,);
+  return CachedNetworkImageProvider(
+    url,
+  );
 }
 
 class MyAvatar extends StatelessWidget {
   final String url;
   final double radius;
-  MyAvatar(this.url, { this.radius = 54.0 });
+  MyAvatar(this.url, {this.radius = 54.0});
 
   @override
   Widget build(BuildContext context) {
@@ -111,13 +149,18 @@ class ScrollHeader extends StatelessWidget {
     this.mainAxisAlignment = MainAxisAlignment.end,
     this.bgColor = const Color.fromRGBO(0, 0, 0, .6),
     this.opacity = 0.0,
-  }): assert(child != null);
+  }) : assert(child != null);
 
   @override
   Widget build(BuildContext context) {
     return FlexibleSpaceBar(
       // collapseMode: CollapseMode.pin,
-      title: isShowTitle ? Opacity(child: title, opacity: opacity,) : null,
+      title: isShowTitle
+          ? Opacity(
+              child: title,
+              opacity: opacity,
+            )
+          : null,
       background: Container(
         height: topHeight,
         decoration: BoxDecoration(
@@ -151,10 +194,15 @@ class MyFadeHeader extends StatelessWidget {
     @required this.child,
     this.opacity = 0.0,
     this.show = false,
-  }): assert(opacity >= 0.0 && opacity <= 1.0);
+  }) : assert(opacity >= 0.0 && opacity <= 1.0);
 
   @override
   Widget build(BuildContext context) {
-    return show ? Opacity(child: child, opacity: opacity,) : Text('');
+    return show
+        ? Opacity(
+            child: child,
+            opacity: opacity,
+          )
+        : Text('');
   }
 }

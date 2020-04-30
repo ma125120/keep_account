@@ -1,9 +1,4 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:flutter_easyrefresh/phoenix_footer.dart';
-import 'package:flutter_easyrefresh/phoenix_header.dart';
 
 import 'package:keep_account/store/index.dart';
 import 'package:keep_account/common/index.dart';
@@ -25,33 +20,10 @@ class _HomePageState extends State<HomePage>
   @override
   bool get wantKeepAlive => true;
 
-  ScrollController _scrollCtrl;
-  // double opacity = 0;
-  // bool isShowTitle = false;
-
   @override
   void initState() {
     super.initState();
-    _scrollCtrl = ScrollController();
-    // _scrollCtrl.addListener(() {
-    //   double offset = _scrollCtrl.offset;
-    //   setState(() {
-    //     // opacity = min(1.0, max(0, offset - 300) / 100);
-    //     isShowTitle = offset >= 200;
-    //   });
-    // });
-
-    Future.delayed(Duration(seconds: 1), () {
-      MyStore.billStore.getAll();
-    });
-
     computeStr();
-  }
-
-  @override
-  dispose() {
-    _scrollCtrl.dispose();
-    super.dispose();
   }
 
   computeStr() async {
@@ -65,7 +37,7 @@ class _HomePageState extends State<HomePage>
         ui.ParagraphConstraints(width: MediaQuery.of(context).size.width);
     ui.Paragraph p = pb.build()..layout(pc);
     List<ui.LineMetrics> lines = p.computeLineMetrics();
-    print(lines.length);
+    print(lines.map((v) => v.lineNumber));
   }
 
   Widget get renderTop {
@@ -82,23 +54,23 @@ class _HomePageState extends State<HomePage>
                         context: context,
                         onChange: (newMonth) {
                           print(newMonth);
-                          MyStore.billStore.setDate(newMonth);
+                          MyStore.monthInfo.setDate(newMonth);
                         },
-                        current: MyStore.billStore.date,
+                        current: MyStore.monthInfo.date,
                       );
                     },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         MyText(
-                          MyStore.billStore.year.toString() + '年',
+                          MyStore.monthInfo.year.toString() + '年',
                           color: Colors.white70,
                           size: 24,
                         ),
                         Row(
                           children: <Widget>[
                             MyText(
-                              MyStore.billStore.month,
+                              MyStore.monthInfo.month,
                               color: Colors.white,
                               size: 42,
                             ),
@@ -163,6 +135,7 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     return Material(
       child: Scaffold(
         appBar: AppBar(
@@ -171,25 +144,9 @@ class _HomePageState extends State<HomePage>
         body: Column(
           children: <Widget>[
             renderTop,
-            Expanded(
-              child: EasyRefresh.custom(
-                // header: PhoenixHeader(),
-                // footer: PhoenixFooter(),
-                // onRefresh: () async {
-                //   // return true;
-                // },
-                // onLoad: () async {},
-                scrollController: _scrollCtrl,
-                slivers: <Widget>[
-                  SliverToBoxAdapter(
-                    child: renderTop,
-                  ),
-                ],
-              ),
-            ),
-            // ...MyEnum.iconList.map((v) => Iconfont(v['icon'])),
+            ...MyEnum.iconList.map((v) => Iconfont(v['icon'])),
             // Observer(builder: (_) => Text('${MyStore.counter.value}'),),
-            // Observer(builder: (_) => Text('${MyStore.billStore.date}'),),
+            // Observer(builder: (_) => Text('${MyStore.monthInfo.date}'),),
             // RaisedButton(child: Text('增加'), onPressed: counter.increment, color: Theme.of(context).primaryColor, textColor: Colors.white,),
             // RaisedButton(child: Text('初始化'), onPressed: counter.init,),
             // Icon(IconData(0xe6af, fontFamily: "iconfont", matchTextDirection: true), color: Colors.red, size: 16,),

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-export './picker.dart';
+export './form.dart';
 
 class MyInk extends StatelessWidget {
   final Widget child;
   final Function() onTap;
-  MyInk({ this.child, this.onTap, }): assert(child != null);
+  MyInk({
+    this.child,
+    this.onTap,
+  }) : assert(child != null);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,7 @@ class MyInk extends StatelessWidget {
 class FixedStack extends StatelessWidget {
   final Widget body;
   final List<Widget> children;
-  FixedStack({ this.body, this.children = const [] }): assert(body != null);
+  FixedStack({this.body, this.children = const []}) : assert(body != null);
 
   @override
   Widget build(BuildContext context) {
