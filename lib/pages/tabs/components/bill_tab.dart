@@ -1,18 +1,24 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:keep_account/common/adapt.dart';
 import 'package:keep_account/common/date.dart';
 import 'package:keep_account/common/enum.dart';
+import 'package:keep_account/common/index.dart';
 // import 'package:keep_account/models/index.dart';
 import 'package:keep_account/components/index.dart';
 import 'package:keep_account/data/bill.dart';
+import 'package:keep_account/models/bill.dart';
 import 'package:keep_account/store/index.dart';
 import './bill.dart';
 
 class BillTab extends StatefulWidget {
   final MoneyEnum type;
+  final Map data;
 
   BillTab({
     this.type = MoneyEnum.outcome,
+    this.data,
   });
 
   @override
@@ -20,11 +26,11 @@ class BillTab extends StatefulWidget {
 }
 
 final defaultForm = {
-  'price': 10,
+  'price': 0,
   'dateStr': MyDate.format('yyyy-MM-dd'),
   'iconId': '1',
-  'note': 'dsa',
-  'hasCost': 1,
+  'note': '',
+  'hasCost': 0,
 };
 
 class _BillTabState extends State<BillTab> with AutomaticKeepAliveClientMixin {
@@ -34,12 +40,19 @@ class _BillTabState extends State<BillTab> with AutomaticKeepAliveClientMixin {
   Map<String, dynamic> form = {};
 
   final _formKey = GlobalKey<FormState>();
+  final _childKey = GlobalKey<FormState>();
 
   @override
   initState() {
     super.initState();
     setState(() {
-      form = Map.from(defaultForm);
+      form = {
+        ...(widget.data ?? defaultForm),
+        'iconId': (widget.type == MoneyEnum.income
+                ? MyEnum.incomeList
+                : MyEnum.outcomeList)
+            .first['id']
+      };
     });
   }
 
@@ -47,6 +60,7 @@ class _BillTabState extends State<BillTab> with AutomaticKeepAliveClientMixin {
     return Form(
       key: _formKey,
       child: BillForm(
+        key: _childKey,
         data: form,
         type: widget.type,
       ),
@@ -59,6 +73,9 @@ class _BillTabState extends State<BillTab> with AutomaticKeepAliveClientMixin {
     return Column(
       children: <Widget>[
         renderForm(),
+        // Expanded(
+        //   child: Container(),
+        // ),
         Container(
           margin: EdgeInsets.only(top: Adapt.px(16)),
           width: double.infinity,
@@ -72,11 +89,17 @@ class _BillTabState extends State<BillTab> with AutomaticKeepAliveClientMixin {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
                 form['type'] = MyEnum.moneyComeInt[widget.type];
+                form['price'] = double.parse(form['price']);
 
-                await billProvider.insert(form);
-                MyStore.billStore.getAll();
+                if (form['id'] != null) {
+                  await billProvider.update(Bill.fromJson(form));
+                } else {
+                  await billProvider.insert(form);
+                }
+
+                billStore.getAll();
                 Navigator.of(context).pop();
-                print('保存成功');
+                BotToast.showSimpleNotification(title: '保存成功');
               }
             },
           ),
@@ -93,10 +116,12 @@ class _BillTabState extends State<BillTab> with AutomaticKeepAliveClientMixin {
             child: Text('重置'),
             onPressed: () {
               _formKey.currentState.reset();
-              print(form);
             },
           ),
         ),
+        // Container(
+        //   height: 32,
+        // ),
         CloseButton(),
       ],
     );
@@ -109,9 +134,13 @@ class _BillTabState extends State<BillTab> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: Adapt.px(36), vertical: Adapt.px(12)),
+      padding: EdgeInsets.only(
+          top: Adapt.px(12),
+          bottom: Adapt.px(12) + MediaQuery.of(context).viewInsets.bottom,
+          left: Adapt.px(36),
+          right: Adapt.px(36)),
       child: SingleChildScrollView(
         child: renderBody(),
       ),

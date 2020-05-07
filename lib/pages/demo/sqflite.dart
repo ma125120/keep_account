@@ -17,31 +17,44 @@ class _SqfDemoPageState extends State<SqfDemoPage> {
 
   add() async {
     await todoProvider.open(todoPath);
-    await todoProvider.insert(Todo.fromMap({ '$columnTitle': '测试' + Random().nextInt(100).toString(), '$columnDone': 0, }));
+    await todoProvider.insert(Todo.fromMap({
+      '$columnTitle': '测试' + Random().nextInt(100).toString(),
+      '$columnDone': 0,
+    }));
     getTodos();
   }
+
   empty() async {
     await todoProvider.open(todoPath);
     await todoProvider.empty();
     BotToast.showText(text: "删除成功");
     getTodos();
   }
+
   getTodos() async {
     await todoProvider.open(todoPath);
     List newList = await todoProvider.getTodos();
     setState(() {
       list = newList;
     });
-    print(newList);
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        RaisedButton(child: Text('增加数据库'), onPressed: add,),
-        RaisedButton(child: Text('查看数据'), onPressed: getTodos,),
-        RaisedButton(child: Text('清空数据'), onPressed: empty,),
+        RaisedButton(
+          child: Text('增加数据库'),
+          onPressed: add,
+        ),
+        RaisedButton(
+          child: Text('查看数据'),
+          onPressed: getTodos,
+        ),
+        RaisedButton(
+          child: Text('清空数据'),
+          onPressed: empty,
+        ),
         if (list == null || list.length == 0) Text('数据库的数据为空'),
         ...(list ?? [])?.map((v) => Text(v.id.toString() + '. ' + v.title)),
       ],

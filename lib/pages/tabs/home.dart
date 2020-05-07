@@ -1,17 +1,13 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:flutter_easyrefresh/phoenix_footer.dart';
-import 'package:flutter_easyrefresh/phoenix_header.dart';
+import 'package:flutter_easyrefresh/material_header.dart';
 
+import 'package:keep_account/models/bill_list.dart';
+import 'package:keep_account/pages/tabs/home/list.dart';
 import 'package:keep_account/store/index.dart';
 import 'package:keep_account/common/index.dart';
 import 'package:keep_account/components/index.dart';
 import 'package:flutter_my_picker/flutter_my_picker.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'dart:ui' as ui;
-// import 'package:keep_account/pages/demo/sqflite.dart';
 
 final counter = Counter();
 
@@ -26,46 +22,19 @@ class _HomePageState extends State<HomePage>
   bool get wantKeepAlive => true;
 
   ScrollController _scrollCtrl;
-  // double opacity = 0;
-  // bool isShowTitle = false;
 
   @override
   void initState() {
     super.initState();
     _scrollCtrl = ScrollController();
-    // _scrollCtrl.addListener(() {
-    //   double offset = _scrollCtrl.offset;
-    //   setState(() {
-    //     // opacity = min(1.0, max(0, offset - 300) / 100);
-    //     isShowTitle = offset >= 200;
-    //   });
-    // });
 
-    Future.delayed(Duration(seconds: 1), () {
-      MyStore.billStore.getAll();
-    });
-
-    computeStr();
+    billStore.getAll();
   }
 
   @override
   dispose() {
     _scrollCtrl.dispose();
     super.dispose();
-  }
-
-  computeStr() async {
-    var str = await rootBundle.loadString('assets/1.txt');
-    ui.ParagraphBuilder pb = ui.ParagraphBuilder(
-        ui.ParagraphStyle(fontSize: 16, textAlign: TextAlign.left));
-    pb.pushStyle(ui.TextStyle(color: Colors.black));
-    pb.addText(str);
-
-    ui.ParagraphConstraints pc =
-        ui.ParagraphConstraints(width: MediaQuery.of(context).size.width);
-    ui.Paragraph p = pb.build()..layout(pc);
-    List<ui.LineMetrics> lines = p.computeLineMetrics();
-    print(lines.length);
   }
 
   Widget get renderTop {
@@ -80,37 +49,35 @@ class _HomePageState extends State<HomePage>
                     onTap: () {
                       MyPicker.showMonthPicker(
                         context: context,
+                        isShowHeader: false,
                         onChange: (newMonth) {
-                          print(newMonth);
-                          MyStore.billStore.setDate(newMonth);
+                          billStore.setDate(newMonth);
                         },
-                        current: MyStore.billStore.date,
+                        current: billStore.date,
                       );
                     },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         MyText(
-                          MyStore.billStore.year.toString() + '年',
+                          billStore.year.toString() + '年',
                           color: Colors.white70,
-                          size: 24,
                         ),
                         Row(
                           children: <Widget>[
                             MyText(
-                              MyStore.billStore.month,
+                              billStore.month,
                               color: Colors.white,
-                              size: 42,
+                              size: 24,
                             ),
                             MyText(
                               ' 月',
                               color: Colors.white70,
-                              size: 24,
                             ),
                             Icon(
                               Icons.arrow_drop_down,
                               color: Colors.white,
-                              size: Adapt.px(64),
+                              size: 32,
                             ),
                           ],
                         ),
@@ -118,15 +85,18 @@ class _HomePageState extends State<HomePage>
                     ),
                   ),
                   Container(
+                    margin: EdgeInsets.only(left: 6),
                     width: Adapt.px(1),
-                    height: Adapt.px(16 * 4),
+                    height: 16 * 2.0,
                     decoration: BoxDecoration(color: Colors.white70),
                   ),
                   Expanded(
                     child: Row(
                       children: <Widget>[
-                        _renderTopItem('收入', 0.00),
-                        _renderTopItem('支出', 0.00),
+                        _renderTopItem(
+                            '收入', billStore.income.toStringAsFixed(2)),
+                        _renderTopItem(
+                            '支出', billStore.outcome.toStringAsFixed(2)),
                       ],
                     ),
                   )
@@ -137,23 +107,25 @@ class _HomePageState extends State<HomePage>
 
   Widget _renderTopItem(
     String text, [
-    num price = 0.00,
+    String price = '0.00',
   ]) {
     return Expanded(
       child: Column(
         children: <Widget>[
+          Container(
+            height: 4,
+          ),
           MyText(
             text,
             color: Colors.white70,
-            size: 24,
           ),
           Container(
-            height: Adapt.px(12),
+            height: 6,
           ),
           MyText(
             price.toString(),
             color: Colors.white,
-            size: 40,
+            size: 28,
           ),
         ],
       ),
@@ -163,40 +135,77 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     return Material(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text('记账'),
         ),
         body: Column(
           children: <Widget>[
             renderTop,
-            Expanded(
-              child: EasyRefresh.custom(
-                // header: PhoenixHeader(),
-                // footer: PhoenixFooter(),
-                // onRefresh: () async {
-                //   // return true;
-                // },
-                // onLoad: () async {},
-                scrollController: _scrollCtrl,
-                slivers: <Widget>[
-                  SliverToBoxAdapter(
-                    child: renderTop,
+            Observer(
+              builder: (_) {
+                double total = billStore.total;
+                return Container(
+                  padding: EdgeInsets.only(left: 8, right: 8, top: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        '本月合计：',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      Text(
+                        total.toStringAsFixed(2),
+                        style: TextStyle(
+                            fontSize: 24,
+                            color: total > 0 ? MyConst.primary : Colors.green),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                );
+              },
             ),
-            // ...MyEnum.iconList.map((v) => Iconfont(v['icon'])),
-            // Observer(builder: (_) => Text('${MyStore.counter.value}'),),
-            // Observer(builder: (_) => Text('${MyStore.billStore.date}'),),
-            // RaisedButton(child: Text('增加'), onPressed: counter.increment, color: Theme.of(context).primaryColor, textColor: Colors.white,),
-            // RaisedButton(child: Text('初始化'), onPressed: counter.init,),
-            // Icon(IconData(0xe6af, fontFamily: "iconfont", matchTextDirection: true), color: Colors.red, size: 16,),
-            // SqfDemoPage(),
+            Expanded(
+              child: Observer(builder: (_) {
+                List<BillList> list = billStore.list;
+                return EasyRefresh.custom(
+                  emptyWidget: list.length == 0 ? buildEmpty() : null,
+                  header: MaterialHeader(),
+                  onRefresh: () async {
+                    await billStore.getAll();
+                    return true;
+                  },
+                  // onLoad: () async {},
+                  scrollController: _scrollCtrl,
+                  slivers: <Widget>[
+                    HomeList(),
+                  ],
+                );
+              }),
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  buildEmpty() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Image.asset(
+          'assets/nodata.png',
+          width: 120,
+        ),
+        Text(
+          '没有数据',
+          style: TextStyle(color: MyConst.lowTextColor),
+        ),
+      ],
     );
   }
 }

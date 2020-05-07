@@ -44,6 +44,10 @@ class Adapt {
     return _height;
   }
 
+  static get keyboardHeight {
+    return mediaQuery.viewInsets.bottom;
+  }
+
   static paddingTop() {
     return _topbarH;
   }

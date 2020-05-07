@@ -25,7 +25,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   webview_flutter: ^0.3.19+8
   json_annotation: ^3.0.0
-  fluro: 1.5.1
+  fluro: ^1.6.3
   dio: ^3.0.9
   cached_network_image: ^2.0.0
   flutter_easyrefresh: ^2.0.9

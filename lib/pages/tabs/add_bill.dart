@@ -1,19 +1,25 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:keep_account/common/adapt.dart';
-import 'package:keep_account/common/date.dart';
 import 'package:keep_account/common/enum.dart';
-// import 'package:keep_account/models/index.dart';
 import 'package:keep_account/components/index.dart';
 import './components/bill_tab.dart';
-import 'package:flutter_my_picker/flutter_my_picker.dart';
 
 class AddBill extends StatefulWidget {
+  static handler() {
+    return Handler(
+      handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+        return AddBill();
+      },
+    );
+  }
+
   @override
   _AddBillState createState() => _AddBillState();
 }
 
 class _AddBillState extends State<AddBill> with SingleTickerProviderStateMixin {
-  static int index = 0;
+  // static int index = 0;
 
   PageController _pageController;
   TabController _tabCtrl;
@@ -40,7 +46,7 @@ class _AddBillState extends State<AddBill> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    Widget body = SafeArea(
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
@@ -55,6 +61,8 @@ class _AddBillState extends State<AddBill> with SingleTickerProviderStateMixin {
         ),
       ),
     );
+
+    return body;
   }
 
   TabBar buildTabBar() {
@@ -76,7 +84,7 @@ class _AddBillState extends State<AddBill> with SingleTickerProviderStateMixin {
 
   Widget buildPageView() {
     return Container(
-      height: Adapt.px(48 * 2 * 8),
+      height: Adapt.px(48 * 2 * 7.5),
       child: TabBarView(
         children: pages,
         controller: _tabCtrl,

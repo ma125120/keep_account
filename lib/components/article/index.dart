@@ -31,7 +31,7 @@ class MyTitle extends StatelessWidget {
 class MyText extends StatelessWidget {
   final String text;
   final Color color;
-  final num size;
+  final double size;
   final TextAlign align;
 
   MyText(
@@ -45,7 +45,8 @@ class MyText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: TextStyle(color: color, fontSize: Adapt.px(size)),
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(color: color, fontSize: size),
       textAlign: align,
     );
   }

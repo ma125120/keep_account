@@ -11,9 +11,11 @@ class BillForm extends StatefulWidget {
   final String typeText;
 
   BillForm({
+    key,
     this.data,
     this.type = MoneyEnum.outcome,
-  }) : this.typeText = MyEnum.moneyComeText[type];
+  })  : this.typeText = MyEnum.moneyComeText[type],
+        super(key: key);
 
   @override
   _BillFormState createState() => _BillFormState();
@@ -27,7 +29,8 @@ class _BillFormState extends State<BillForm> {
   initState() {
     super.initState();
     setState(() {
-      form = Map.from(widget.data);
+      // form = Map.from(widget.data);
+      form = widget.data ?? {};
       iconList =
           MyEnum.iconList.where((v) => v['type'] == widget.type).toList();
     });
@@ -108,24 +111,25 @@ class _BillFormState extends State<BillForm> {
         MyPopMenuItem(
           labelText: '${widget.typeText}类型',
           value: form['iconId'],
-          onChange: (val) {
+          onSaved: (val) {
             form['iconId'] = val;
           },
           list: iconList,
           map: MyEnum.iconMap,
         ),
-        if (widget.type == MoneyEnum.outcome)
-          MySwitchItem(
-            labelText: '提前${widget.typeText}',
-            value: form['hasCost'] == 1,
-            onSaved: (val) {
-              form['hasCost'] = (val != null && val) ? 1 : 0;
-            },
-          ),
+        // if (widget.type == MoneyEnum.outcome)
+        //   MySwitchItem(
+        //     labelText: '提前${widget.typeText}',
+        //     value: form['hasCost'] == 1,
+        //     onSaved: (val) {
+        //       form['hasCost'] = (val != null && val) ? 1 : 0;
+        //     },
+        //   ),
         MyInputItem(
           isShowBorder: false,
           labelText: '备注',
           value: form['note'],
+          maxLength: 255,
           keyboardType: TextInputType.text,
           onSaved: (val) {
             form['note'] = val;

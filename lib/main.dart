@@ -100,8 +100,8 @@ class _MyAppState extends State<MyApp> {
                 fontWeight: FontWeight.w400),
 
             /// [TextField]
-            subhead: TextStyle(
-                fontSize: MyConst.fontSize, color: MyConst.highTextColor),
+            // subhead: TextStyle(
+            //     fontSize: MyConst.fontSize, color: MyConst.highTextColor),
           ),
           backgroundColor: Color(0XFFF9F9F9),
           cardTheme: CardTheme()

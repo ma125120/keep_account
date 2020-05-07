@@ -10,6 +10,7 @@ class MyInputItem extends StatelessWidget {
   final TextInputType keyboardType;
   final ValidateCallback validator;
   final bool isShowBorder;
+  final int maxLength;
 
   MyInputItem({
     @required this.labelText,
@@ -20,6 +21,7 @@ class MyInputItem extends StatelessWidget {
     this.onSaved,
     this.onChange,
     this.validator,
+    this.maxLength,
   });
 
   @override
@@ -35,11 +37,12 @@ class MyInputItem extends StatelessWidget {
           onSaved: onSaved,
           onChanged: onChange,
           keyboardType: keyboardType,
-          // textDirection: TextDirection.rtl,
-          // textAlign: TextAlign.end,
+          maxLength: maxLength,
           initialValue: value != null ? value.toString() : '',
+          textAlign: TextAlign.right,
           decoration: const InputDecoration().copyWith(
               hintText: '请输入$labelText',
+              counterText: "",
               contentPadding: EdgeInsets.only(right: 0)),
           validator: validator ??
               (value) {

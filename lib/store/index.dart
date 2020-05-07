@@ -3,10 +3,10 @@ export './todo.dart';
 export './bill.dart';
 export 'package:flutter_mobx/flutter_mobx.dart';
 
-import './counter.dart';
-import './bill.dart';
+export './counter.dart';
+export './bill.dart';
 
-class MyStore {
-  static final counter = new Counter();
-  static final billStore = new BillStore();
-}
+// class MyStore {
+//   static final counter = new Counter();
+//   static final billStore = billStore;
+// }

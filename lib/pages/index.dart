@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
-import 'package:flutter_my_picker/flutter_my_picker.dart';
+// import 'package:flutter_my_picker/flutter_my_picker.dart';
 import 'package:keep_account/common/index.dart';
 import 'package:keep_account/components/index.dart';
 import 'package:flutter/cupertino.dart';
@@ -51,14 +51,12 @@ class _IndexPageState extends State<IndexPage> {
   Widget build(BuildContext context) {
     return Material(
         child: Scaffold(
-      /// 输入框抵住键盘
-      resizeToAvoidBottomPadding: false,
+      /// 输入框抵住键盘，为true时页面会变小
+      // resizeToAvoidBottomInset: true,
 
       body: PageView.builder(
         itemBuilder: (context, index) {
-          return SafeArea(
-            child: pages[index],
-          );
+          return pages[index];
         },
         itemCount: pages.length,
         controller: _pageController,
@@ -79,6 +77,7 @@ class _IndexPageState extends State<IndexPage> {
               context: context,
               isScrollControlled: true,
               backgroundColor: Colors.white,
+              useRootNavigator: true,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                 topLeft: const Radius.circular(12),
